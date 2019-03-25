@@ -1,5 +1,5 @@
 {
-  "name": "@devindon/logger",
+  "name": "@iinfinity/logger",
   "version": "0.0.1",
   "description": "TypeScript / JavaScript logger.",
   "main": "index.js",
@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/DevinDon/logger/issues"
   },
-  "homepage": "https://github.com/DevinDon/logger#readme"
+  "homepage": "https://github.com/DevinDon/logger#readme",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
 }
