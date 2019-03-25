@@ -37,11 +37,11 @@ export declare class Logger {
     LEVEL: Level;
     constructor();
     private getTime;
-    log(message: string): void;
-    debug(message: string): void;
-    info(message: string): void;
-    warn(message: string): void;
-    error(message: string): void;
+    log(message: any): void;
+    debug(message: any): void;
+    info(message: any): void;
+    warn(message: any): void;
+    error(message: any): void;
 }
 export default Logger;
 export declare const logger: Logger;

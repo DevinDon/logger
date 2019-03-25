@@ -4,6 +4,10 @@ TypeScript / JavaScript logger.
 
 # Changelog
 
+## 0.0.1 => 0.1.0
+
+- fix: replace message type with {any}
+
 Check the [Changelog](CHANGELOG.md) for more information.
 
 # Usage

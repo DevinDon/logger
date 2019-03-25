@@ -78,50 +78,50 @@ export class Logger {
   /**
    * Print log to stdout, without style and format.
    *
-   * @param {string} message Message you want to print.
+   * @param {any} message Message you want to print.
    * @returns {void} Nothing.
    */
-  log(message: string): void {
+  log(message: any): void {
     this.std.log(message);
   }
 
   /**
    * Print debug message to stdout, with blue color.
    *
-   * @param {string} message Message you want to print.
+   * @param {any} message Message you want to print.
    * @returns {void} Nothing.
    */
-  debug(message: string): void {
+  debug(message: any): void {
     this.std.debug(`${this.getTime(this.LEVEL.debug)} ${message}`);
   }
 
   /**
    * Print information to stdout, with green color.
    *
-   * @param {string} message Message you want to print.
+   * @param {any} message Message you want to print.
    * @returns {void} Nothing.
    */
-  info(message: string): void {
+  info(message: any): void {
     this.std.info(`${this.getTime(this.LEVEL.info)} ${message}`);
   }
 
   /**
    * Print warn message to stderr, with yellow color.
    *
-   * @param {string} message Message you want to print.
+   * @param {any} message Message you want to print.
    * @returns {void} Nothing.
    */
-  warn(message: string): void {
+  warn(message: any): void {
     this.std.warn(`${this.getTime(this.LEVEL.warn)} ${message}`);
   }
 
   /**
    * Print error message to stderr, with red color.
    *
-   * @param {string} message Message you want to print.
+   * @param {any} message Message you want to print.
    * @returns {void} Nothing.
    */
-  error(message: string): void {
+  error(message: any): void {
     this.std.error(`${this.getTime(this.LEVEL.error)} ${message}`);
   }
 
