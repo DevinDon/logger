@@ -7,6 +7,19 @@
     {
       "type": "node",
       "request": "launch",
+      "name": "Debug - Test",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "test"
+      ],
+      "port": 9229,
+      "protocol": "inspector",
+      "sourceMaps": true
+    },
+    {
+      "type": "node",
+      "request": "launch",
       "name": "Debug - Currect File",
       "runtimeArgs": [
         "-r",
