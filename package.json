@@ -1,8 +1,8 @@
 {
-  "name": "@iinfinity/logger.src",
-  "version": "0.0.0",
-  "description": "TypeScript Porject Template.",
-  "main": "dist/index.js",
+  "name": "@iinfinity/logger",
+  "version": "0.1.1",
+  "description": "TypeScript / JavaScript colorful logger.",
+  "main": "index.js",
   "directories": {
     "test": "test"
   },
@@ -13,10 +13,16 @@
     "test": "karma start"
   },
   "keywords": [
-    "typescript"
+    "logger",
+    "log",
+    "console"
   ],
-  "author": "Devin Don <DevinDon@Foxmail.com>",
+  "author": "IInfinity <I.INF@Outlook.com> (https://don.red/)",
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DevinDon/logger/issues"
+  },
+  "homepage": "https://github.com/DevinDon/logger",
   "private": true,
   "dependencies": {},
   "devDependencies": {
@@ -34,9 +40,5 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/DevinDon/logger.git"
-  },
-  "bugs": {
-    "url": "https://github.com/DevinDon/logger/issues"
-  },
-  "homepage": "https://github.com/DevinDon/logger#readme"
+  }
 }
