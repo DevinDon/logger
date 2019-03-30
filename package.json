@@ -1,17 +1,19 @@
 {
   "name": "@iinfinity/logger",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "TypeScript / JavaScript colorful logger.",
   "main": "index.js",
   "directories": {
-    "test": "test"
+    "doc": "docs",
+    "example": "src/demo",
+    "test": "src/test"
   },
   "scripts": {
     "build": "tsc",
     "debug": "node -r ts-node/register --inspect-brk src/main/index.ts",
     "dist": "node dist",
     "start": "npm run build && npm run dist",
-    "test": "node --inspect-brk node_modules/jasmine/bin/jasmine.js --config=jasmine.json --reporter=jasmine-console-reporter --require=ts-node/register"
+    "test": "node node_modules/jasmine/bin/jasmine.js --config=jasmine.json --reporter=jasmine-console-reporter --require=ts-node/register"
   },
   "keywords": [
     "logger",
