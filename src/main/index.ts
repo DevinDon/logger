@@ -39,9 +39,8 @@ export const STYLE = {
 /** Class Logger. */
 export class Logger {
 
-  /** Logger to stdout or stderr. */
-  private std: Console;
-  // private file: Console;
+  /** Console. */
+  private console: Console;
 
   LEVEL: Level = {
     debug: {
@@ -66,13 +65,18 @@ export class Logger {
     }
   };
 
-  constructor() {
-    this.std = new Console({ stdout: process.stdout, stderr: process.stderr, colorMode: true });
-    // this.file = new Console({})
+  constructor(
+    private stdout: NodeJS.WritableStream = process.stdout,
+    private stderr: NodeJS.WritableStream = process.stderr,
+    private colorMode: boolean = true
+  ) {
+    this.console = new Console({ stdout, stderr, colorMode });
   }
 
   private getTime(style: Style): string {
-    return `${style.color}${new Date().toLocaleString()}${STYLE.CONSOLE.reset} ${style.background}${STYLE.COLOR.black}[${style.name}]${STYLE.CONSOLE.reset}`;
+    return this.colorMode
+      ? `${style.color}${new Date().toLocaleString()}${STYLE.CONSOLE.reset} ${style.background}${STYLE.COLOR.black}[${style.name}]${STYLE.CONSOLE.reset}`
+      : `${new Date().toLocaleString()} [${style.name}]`;
   }
 
   /**
@@ -81,8 +85,8 @@ export class Logger {
    * @param {any} message Message you want to print.
    * @returns {void} Nothing.
    */
-  log(message: any): void {
-    this.std.log(message);
+  log(...message: any[]): void {
+    this.console.log(message.join(' '));
   }
 
   /**
@@ -91,8 +95,8 @@ export class Logger {
    * @param {any} message Message you want to print.
    * @returns {void} Nothing.
    */
-  debug(message: any): void {
-    this.std.debug(`${this.getTime(this.LEVEL.debug)} ${message}`);
+  debug(...message: any[]): void {
+    this.console.debug(`${this.getTime(this.LEVEL.debug)} ${message.join(' ')}`);
   }
 
   /**
@@ -101,8 +105,8 @@ export class Logger {
    * @param {any} message Message you want to print.
    * @returns {void} Nothing.
    */
-  info(message: any): void {
-    this.std.info(`${this.getTime(this.LEVEL.info)} ${message}`);
+  info(...message: any[]): void {
+    this.console.info(`${this.getTime(this.LEVEL.info)} ${message.join(' ')}`);
   }
 
   /**
@@ -111,8 +115,8 @@ export class Logger {
    * @param {any} message Message you want to print.
    * @returns {void} Nothing.
    */
-  warn(message: any): void {
-    this.std.warn(`${this.getTime(this.LEVEL.warn)} ${message}`);
+  warn(...message: any[]): void {
+    this.console.warn(`${this.getTime(this.LEVEL.warn)} ${message.join(' ')}`);
   }
 
   /**
@@ -121,12 +125,12 @@ export class Logger {
    * @param {any} message Message you want to print.
    * @returns {void} Nothing.
    */
-  error(message: any): void {
-    this.std.error(`${this.getTime(this.LEVEL.error)} ${message}`);
+  error(...message: any[]): void {
+    this.console.error(`${this.getTime(this.LEVEL.error)} ${message.join(' ')}`);
   }
 
 }
 
-export default Logger;
-
 export const logger = new Logger();
+
+export default Logger;
