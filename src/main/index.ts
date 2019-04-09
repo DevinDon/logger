@@ -19,10 +19,10 @@ export class Logger extends Console {
    * Get logger instance by name.
    *
    * @param {string} name Name of logger.
-   * @returns {Logger} Special logger. If not exist, return default logger.
+   * @returns {Logger | undefined} Special logger or undefined.
    */
-  public static getLogger(name: string = 'default'): Logger {
-    return Logger.map.get(name) || Logger.map.get('default') as Logger;
+  public static getLogger(name: string = 'default'): Logger | undefined {
+    return Logger.map.get(name);
   }
 
   /**
