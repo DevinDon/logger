@@ -1,8 +1,11 @@
 // import { Logger, Level } from '@iinfinity/logger';
 import { Logger, Level, logger } from '../main'; // use above import statement in your workspace
 
+/** The logger name is `1`. */
 const l1 = new Logger({ name: '1' });
+/** In colorless mode. */
 const l2 = new Logger({ name: '2', colorful: false });
+/** Logger level is `WARN`, debug & info will not be output. */
 const l3 = new Logger({ name: '3', level: Level.WARN });
 
 const logger1 = Logger.getLogger('1');
