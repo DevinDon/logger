@@ -1,7 +1,7 @@
 {
   "name": "@iinfinity/logger",
   "version": "0.2.0",
-  "description": "TypeScript / JavaScript colorful logger, support log to file.",
+  "description": "TypeScript / JavaScript colorful logger, support saving logs to file(s).",
   "main": "index.js",
   "directories": {
     "doc": "docs",
