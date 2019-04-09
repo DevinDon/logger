@@ -1,9 +1,8 @@
 export * from './@types';
-import { AssertionError } from 'assert';
 import { Console } from 'console';
 import { createWriteStream } from 'fs';
 import { Writable } from 'stream';
-import { COLORS, Level, Option, Style, STYLES } from './@types';
+import { COLORS, Level, Option, Style, STYLES, STDNULL } from './@types';
 
 /**
  * Colorful logger support log to file.
@@ -17,42 +16,79 @@ export class Logger extends Console {
   private static map: Map<string, Logger> = new Map();
 
   /**
-   * Get logger instance with name.
+   * Get logger instance by name.
    *
    * @param {string} name Name of logger.
    * @returns {Logger} Special logger. If not exist, return default logger.
    */
-  static getLogger(name: string = 'default'): Logger {
+  public static getLogger(name: string = 'default'): Logger {
     return Logger.map.get(name) || Logger.map.get('default') as Logger;
   }
 
-  private colorful: boolean;
-  private level: Level;
-  private name: string;
-  private fileout?: Writable;
-  private fileerr?: Writable;
-  private stdout: Writable;
-  private stderr: Writable;
+  /**
+   * Set logger instance into map.
+   *
+   * @param {Logger} logger Saved logger.
+   * @returns {void} Nothing.
+   */
+  // tslint:disable-next-line: no-shadowed-variable
+  public static setLogger(logger: Logger): void {
+    Logger.map.set(logger.name, logger);
+  }
+
+  /** Colorful mode or colorless mode. */
+  public colorful: boolean;
+  /** Log level, it may: `Level.ALL`, `Level.DEBUG`, `Level.INFO`, `Level.WARN`, `Level.ERROR` & `Level.NONE`. */
+  public level: Level;
+  /** STDOUT to file. */
+  public fileout?: Writable;
+  /** STDERR to file. */
+  public fileerr?: Writable;
+  /** STDOUT of this logger. */
+  public stdout?: Writable;
+  /** STDERR of this logger. */
+  public stderr?: Writable;
+  /** Logger name. */
+  public readonly name: string;
 
   /**
    * Create a new logger.
    *
-   * @param {Partial<Option>} option Logger option.
+   * Such as `const logger = new Logger('your logger name')`.
+   *
+   * If you have not provide stdout / stderr, it will not output on stdout / stderr.
+   *
+   * The same as fileout / fileerr.
+   *
+   * @param {Option | string} option Logger option or name.
    */
-  constructor(option: Partial<Option> = {}) {
-    super({ // create console instance
-      stdout: option.stdout || process.stdout,
-      stderr: option.stderr || process.stderr,
-      colorMode: typeof option.colorful === 'undefined' ? true : option.colorful
-    });
-    this.colorful = typeof option.colorful === 'undefined' ? true : option.colorful; // default to enable colorful console
-    this.level = option.level || Level.DEBUG; // default to debug level
-    this.name = option.name || 'default';
-    this.fileout = option.fileout ? createWriteStream(option.fileout, { flags: 'a' }) : undefined;
-    this.fileerr = option.fileerr ? createWriteStream(option.fileerr, { flags: 'a' }) : undefined;
-    this.stdout = option.stdout || process.stdout;
-    this.stderr = option.stderr || process.stderr;
-    Logger.map.set(option.name || 'default', this);
+  constructor(option: Option | string) {
+    if (typeof option === 'string') {
+      super({
+        stdout: process.stdout,
+        stderr: process.stderr,
+        colorMode: true
+      });
+      this.colorful = true;
+      this.level = Level.ALL;
+      this.name = option;
+      this.stdout = process.stdout;
+      this.stderr = process.stderr;
+    } else {
+      super({
+        stdout: option.stdout || STDNULL,
+        stderr: option.stderr,
+        colorMode: option.colorful
+      });
+      this.colorful = typeof option.colorful === 'boolean' ? option.colorful : true;
+      this.level = option.level || Level.ALL; // default to ALL level
+      this.name = option.name;
+      this.fileout = option.fileout ? createWriteStream(option.fileout, { flags: 'a' }) : undefined;
+      this.fileerr = option.fileerr ? createWriteStream(option.fileerr, { flags: 'a' }) : undefined;
+      this.stdout = option.stdout;
+      this.stderr = option.stderr;
+    }
+    Logger.map.set(this.name, this);
   }
 
   /**
@@ -67,6 +103,8 @@ export class Logger extends Console {
       : `${new Date().toLocaleString()} [${style.name}]`;
   }
 
+  // tslint:disable: no-unused-expression
+
   /**
    * A simple assertion test that verifies whether `condition` is truthy.
    * If it is not, an `AssertionError` will be record but not throw.
@@ -79,16 +117,12 @@ export class Logger extends Console {
    */
   assert(condition: boolean, same: string, different: string): boolean {
     if (condition) {
-      this.stdout.write(`${this.getTime(STYLES.ASSERT.TRUE)} ${same}\n`);
-      if (this.fileout) {
-        this.fileout.write(`${this.getTime(STYLES.ASSERT.TRUE, false)} ${same}\n`);
-      }
+      this.stdout && this.stdout.write(`${this.getTime(STYLES.ASSERT.TRUE)} ${same}\n`);
+      this.fileout && this.fileout.write(`${this.getTime(STYLES.ASSERT.TRUE, false)} ${same}\n`);
       return true;
     } else {
-      this.stderr.write(`${this.getTime(STYLES.ASSERT.FALSE)} ${different}\n`);
-      if (this.fileerr) {
-        this.fileerr.write(`${this.getTime(STYLES.ASSERT.FALSE, false)} ${different}\n`);
-      }
+      this.stderr && this.stderr.write(`${this.getTime(STYLES.ASSERT.FALSE)} ${different}\n`);
+      this.fileerr && this.fileerr.write(`${this.getTime(STYLES.ASSERT.FALSE, false)} ${different}\n`);
       return false;
       // throw AssertionError;
     }
@@ -102,10 +136,8 @@ export class Logger extends Console {
    */
   debug(...message: any[]): void {
     if (Level.DEBUG >= this.level) {
-      this.stdout.write(`${this.getTime(STYLES.DEBUG)} ${message.join(' ')}\n`);
-      if (this.fileout) {
-        this.fileout.write(`${this.getTime(STYLES.DEBUG, false)} ${message.join(' ')}\n`);
-      }
+      this.stdout && this.stdout.write(`${this.getTime(STYLES.DEBUG)} ${message.join(' ')}\n`);
+      this.fileout && this.fileout.write(`${this.getTime(STYLES.DEBUG, false)} ${message.join(' ')}\n`);
     }
   }
 
@@ -117,10 +149,8 @@ export class Logger extends Console {
    */
   info(...message: any[]): void {
     if (Level.INFO >= this.level) {
-      this.stdout.write(`${this.getTime(STYLES.INFO)} ${message.join(' ')}\n`);
-      if (this.fileout) {
-        this.fileout.write(`${this.getTime(STYLES.INFO, false)} ${message.join(' ')}\n`);
-      }
+      this.stdout && this.stdout.write(`${this.getTime(STYLES.INFO)} ${message.join(' ')}\n`);
+      this.fileout && this.fileout.write(`${this.getTime(STYLES.INFO, false)} ${message.join(' ')}\n`);
     }
   }
 
@@ -132,10 +162,8 @@ export class Logger extends Console {
    */
   warn(...message: any[]): void {
     if (Level.WARN >= this.level) {
-      this.stderr.write(`${this.getTime(STYLES.WARN)} ${message.join(' ')}\n`);
-      if (this.fileerr) {
-        this.fileerr.write(`${this.getTime(STYLES.WARN, false)} ${message.join(' ')}\n`);
-      }
+      this.stderr && this.stderr.write(`${this.getTime(STYLES.WARN)} ${message.join(' ')}\n`);
+      this.fileerr && this.fileerr.write(`${this.getTime(STYLES.WARN, false)} ${message.join(' ')}\n`);
     }
   }
 
@@ -147,10 +175,8 @@ export class Logger extends Console {
    */
   error(...message: any[]): void {
     if (Level.ERROR >= this.level) {
-      this.stderr.write(`${this.getTime(STYLES.ERROR)} ${message.join(' ')}\n`);
-      if (this.fileerr) {
-        this.fileerr.write(`${this.getTime(STYLES.ERROR, false)} ${message.join(' ')}\n`);
-      }
+      this.stderr && this.stderr.write(`${this.getTime(STYLES.ERROR)} ${message.join(' ')}\n`);
+      this.fileerr && this.fileerr.write(`${this.getTime(STYLES.ERROR, false)} ${message.join(' ')}\n`);
     }
   }
 
@@ -170,6 +196,6 @@ export class Logger extends Console {
 
 }
 
-export const logger = new Logger();
+export const logger = new Logger('default');
 
 export default Logger;

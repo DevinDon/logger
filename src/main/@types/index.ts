@@ -17,19 +17,19 @@ export enum Level {
 /** Console option. */
 export interface Option {
   /** Colorful console, default to true. */
-  colorful: boolean;
+  colorful?: boolean;
   /** Path to save error. */
   fileerr?: string;
   /** Path to save output. */
   fileout?: string;
-  /** Log level, default to debug. */
-  level: Level;
-  /** Logger name, default to 'default'. */
+  /** Log level, default to ALL. */
+  level?: Level;
+  /** Logger name. */
   name: string;
   /** Standard output. */
-  stdout: Writable;
+  stdout?: Writable;
   /** Standard error. */
-  stderr: Writable;
+  stderr?: Writable;
 }
 
 /** Style. */
