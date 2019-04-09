@@ -8,7 +8,7 @@ describe('logger', () => {
   let cuserr: Writable;
   let out: string;
   let err: string;
-  let customizeLogger: Logger;
+  let testLogger: Logger;
 
   beforeAll(done => {
     cusout = new Writable({
@@ -25,7 +25,7 @@ describe('logger', () => {
         callback();
       }
     });
-    customizeLogger = new Logger({
+    testLogger = new Logger({
       stdout: cusout,
       stderr: cuserr,
       colorful: false,
@@ -36,17 +36,17 @@ describe('logger', () => {
   });
 
   beforeEach(done => {
-    customizeLogger.setLevel(Level.ALL);
+    testLogger.setLevel(Level.ALL);
     out = '';
     err = '';
     done();
   });
 
-  it('default logger & customize logger should be created', done => {
+  it('default logger & test logger should be created', done => {
     expect(Logger.getLogger()).toBeDefined();
     expect(Logger.getLogger() instanceof Logger).toBeTruthy();
-    expect(Logger.getLogger('customize')).toBeDefined();
-    expect(Logger.getLogger('customize') instanceof Logger).toBeTruthy();
+    expect(Logger.getLogger('test')).toBeDefined();
+    expect(Logger.getLogger('test') instanceof Logger).toBeTruthy();
     done();
   });
 
@@ -54,8 +54,8 @@ describe('logger', () => {
     const matcherTrue = /\d+-\d+-\d+ \d+:\d+:\d+ \[ASSERT\] same/;
     const matcherFalse = /\d+-\d+-\d+ \d+:\d+:\d+ \[ASSERT\] different/;
     // const matcher = (text: string) => /\d+-\d+-\d+ \d+:\d+:\d+ \[ASSERT\] ${}/;
-    expect((customizeLogger.assert(true, 'same', 'different'), matcherTrue.test(out))).toBeTruthy();
-    expect((customizeLogger.assert(false, 'same', 'different'), matcherFalse.test(err))).toBeTruthy();
+    expect((testLogger.assert(true, 'same', 'different'), matcherTrue.test(out))).toBeTruthy();
+    expect((testLogger.assert(false, 'same', 'different'), matcherFalse.test(err))).toBeTruthy();
     done();
   });
 
@@ -64,27 +64,27 @@ describe('logger', () => {
     // const matcher = (message: any) => new RegExp(`\d+-\d+-\d+ \d+:\d+:\d+ \[DEBUG \] ${message}`);
     const input1 = 'debug';
     const input2 = 'message';
-    customizeLogger.setLevel(Level.ALL);
-    expect((customizeLogger.debug(input1), matcher.test(out))).toBeTruthy();
-    customizeLogger.setLevel(Level.DEBUG);
-    expect((customizeLogger.debug(input2), matcher.test(out))).toBeTruthy();
-    expect((customizeLogger.debug(input1, input2), matcher.test(out))).toBeTruthy();
-    const spy = spyOn(customizeLogger, 'debug');
-    customizeLogger.debug(input1, input2);
+    testLogger.setLevel(Level.ALL);
+    expect((testLogger.debug(input1), matcher.test(out))).toBeTruthy();
+    testLogger.setLevel(Level.DEBUG);
+    expect((testLogger.debug(input2), matcher.test(out))).toBeTruthy();
+    expect((testLogger.debug(input1, input2), matcher.test(out))).toBeTruthy();
+    const spy = spyOn(testLogger, 'debug');
+    testLogger.debug(input1, input2);
     expect(spy).toHaveBeenCalledWith(input1, input2);
     expect(spy).toHaveBeenCalledTimes(1);
     done();
   });
 
   it('debug method should not output when level is higher than `DEBUG`', done => {
-    customizeLogger.setLevel(Level.NONE);
-    expect((customizeLogger.debug('debug should not output anything'), out)).toBe('');
-    customizeLogger.setLevel(Level.ERROR);
-    expect((customizeLogger.debug('debug should not output anything'), out)).toBe('');
-    customizeLogger.setLevel(Level.WARN);
-    expect((customizeLogger.debug('debug should not output anything'), out)).toBe('');
-    customizeLogger.setLevel(Level.INFO);
-    expect((customizeLogger.debug('debug should not output anything'), out)).toBe('');
+    testLogger.setLevel(Level.NONE);
+    expect((testLogger.debug('debug should not output anything'), out)).toBe('');
+    testLogger.setLevel(Level.ERROR);
+    expect((testLogger.debug('debug should not output anything'), out)).toBe('');
+    testLogger.setLevel(Level.WARN);
+    expect((testLogger.debug('debug should not output anything'), out)).toBe('');
+    testLogger.setLevel(Level.INFO);
+    expect((testLogger.debug('debug should not output anything'), out)).toBe('');
     done();
   });
 
