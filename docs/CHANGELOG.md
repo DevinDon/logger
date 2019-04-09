@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.0 => 0.3.0
+
+- feat: allow to customize log level
+- feat: global console manager
+- feat: support for saving logs to file(s)
+
 ## 0.1.0 => 0.2.0
 
 - perf: allow any number of args of any type
