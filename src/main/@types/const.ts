@@ -1,4 +1,5 @@
 import { Styles } from '.';
+import { Writable } from 'stream';
 
 /** Style list. */
 export const COLORS = {
@@ -70,3 +71,8 @@ export const STYLES: Styles = {
     font: COLORS.FONT.red
   }
 };
+
+/** Like `/dev/null`, it will display nothing. */
+export const STDNULL: Writable = new Writable({
+  write() { }
+});
