@@ -11,8 +11,7 @@
   "scripts": {
     "build": "tsc",
     "debug": "node -r ts-node/register --inspect-brk src/main/index.ts",
-    "dist": "node dist",
-    "start": "npm run build && npm run dist",
+    "demo": "ts-node src/demo",
     "test": "node node_modules/jasmine/bin/jasmine.js --config=jasmine.json --reporter=jasmine-console-reporter --require=ts-node/register"
   },
   "keywords": [
