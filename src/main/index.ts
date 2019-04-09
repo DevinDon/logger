@@ -1,92 +1,97 @@
+export * from './@types';
+import { AssertionError } from 'assert';
 import { Console } from 'console';
-import { Level, Style } from './@types';
+import { createWriteStream } from 'fs';
+import { Writable } from 'stream';
+import { COLORS, Level, Option, Style, STYLES } from './@types';
 
-/** Style list. */
-export const STYLE = {
-  BACKGROUND: {
-    black: '\x1b[40m',
-    blue: '\x1b[44m',
-    cyan: '\x1b[46m',
-    green: '\x1b[42m',
-    magenta: '\x1b[45m',
-    red: '\x1b[41m',
-    yellow: '\x1b[43m',
-    white: '\x1b[47m'
-  },
-  COLOR: {
-    black: '\x1b[30m',
-    blue: '\x1b[34m',
-    cyan: '\x1b[36m',
-    green: '\x1b[32m',
-    magenta: '\x1b[35m',
-    red: '\x1b[31m',
-    yellow: '\x1b[33m',
-    white: '\x1b[37m'
-  },
-  CONSOLE: {
-    backLine: '\x1b[1A',
-    bold: '\x1b[1m',
-    cleanLine: '\x1b[K',
-    dim: '\x1b[2m',
-    italic: '\x1b[3m',
-    reset: '\x1b[0m',
-    reverse: '\x1b[7m',
-    strikethrough: '\x1b[9m',
-    underscore: '\x1b[4m'
-  }
-};
+/**
+ * Colorful logger support log to file.
+ *
+ * @extends Console
+ * @author IInfinity
+ */
+export class Logger extends Console {
 
-/** Class Logger. */
-export class Logger {
+  /** All loggers. */
+  private static map: Map<string, Logger> = new Map();
 
-  /** Console. */
-  private console: Console;
-
-  LEVEL: Level = {
-    debug: {
-      name: 'DEBUG',
-      background: STYLE.BACKGROUND.blue,
-      color: STYLE.COLOR.blue
-    },
-    info: {
-      name: 'INFO ',
-      background: STYLE.BACKGROUND.green,
-      color: STYLE.COLOR.green
-    },
-    warn: {
-      name: 'WARN ',
-      background: STYLE.BACKGROUND.yellow,
-      color: STYLE.COLOR.yellow
-    },
-    error: {
-      name: 'ERROR',
-      background: STYLE.BACKGROUND.red,
-      color: STYLE.COLOR.red
-    }
-  };
-
-  constructor(
-    private stdout: NodeJS.WritableStream = process.stdout,
-    private stderr: NodeJS.WritableStream = process.stderr,
-    private colorMode: boolean = true
-  ) {
-    this.console = new Console({ stdout, stderr, colorMode });
+  /**
+   * Get logger instance with name.
+   *
+   * @param {string} name Name of logger.
+   * @returns {Logger} Special logger. If not exist, return default logger.
+   */
+  static getLogger(name: string = 'default'): Logger {
+    return Logger.map.get(name) || Logger.map.get('default') as Logger;
   }
 
-  private getTime(style: Style): string {
-    return this.colorMode
-      ? `${style.color}${new Date().toLocaleString()}${STYLE.CONSOLE.reset} ${style.background}${STYLE.COLOR.black}[${style.name}]${STYLE.CONSOLE.reset}`
+  private colorful: boolean;
+  private level: Level;
+  private name: string;
+  private fileout?: Writable;
+  private fileerr?: Writable;
+  private stdout: Writable;
+  private stderr: Writable;
+
+  /**
+   * Create a new logger.
+   *
+   * @param {Partial<Option>} option Logger option.
+   */
+  constructor(option: Partial<Option> = {}) {
+    super({ // create console instance
+      stdout: option.stdout || process.stdout,
+      stderr: option.stderr || process.stderr,
+      colorMode: typeof option.colorful === 'undefined' ? true : option.colorful
+    });
+    this.colorful = typeof option.colorful === 'undefined' ? true : option.colorful; // default to enable colorful console
+    this.level = option.level || Level.DEBUG; // default to debug level
+    this.name = option.name || 'default';
+    this.fileout = option.fileout ? createWriteStream(option.fileout, { flags: 'a' }) : undefined;
+    this.fileerr = option.fileerr ? createWriteStream(option.fileerr, { flags: 'a' }) : undefined;
+    this.stdout = option.stdout || process.stdout;
+    this.stderr = option.stderr || process.stderr;
+    Logger.map.set(option.name || 'default', this);
+  }
+
+  /**
+   * Get format time.
+   *
+   * @param {Style} style Output style.
+   * @returns {string} Time string.
+   */
+  private getTime(style: Style, color: boolean = this.colorful): string {
+    return color
+      ? `${style.font}${new Date().toLocaleString()}${COLORS.CONSOLE.reset} ${style.background}${COLORS.FONT.black}[${style.name}]${COLORS.CONSOLE.reset}`
       : `${new Date().toLocaleString()} [${style.name}]`;
   }
 
   /**
-   * Print log to stdout, without style and format.
+   * A simple assertion test that verifies whether `condition` is truthy.
+   * If it is not, an `AssertionError` will be record but not throw.
+   * If provided, the error message is formatted using `util.format()` and used as the error message.
    *
-   * @param {any} message Message you want to print.
-   * @returns {void} Nothing.
+   * @param {boolean} condition Condition to assert.
+   * @param {string} same If same, this message will be display.
+   * @param {string} different If different, this message will be display.
+   * @returns {boolean} True or false.
    */
-  log(...message: any[]): void {
-    this.console.log(message.join(' '));
+  assert(condition: boolean, same: string, different: string): boolean {
+    if (condition) {
+      this.stdout.write(`${this.getTime(STYLES.ASSERT.TRUE)} ${same}\n`);
+      if (this.fileout) {
+        this.fileout.write(`${this.getTime(STYLES.ASSERT.TRUE, false)} ${same}\n`);
+      }
+      return true;
+    } else {
+      this.stderr.write(`${this.getTime(STYLES.ASSERT.FALSE)} ${different}\n`);
+      if (this.fileerr) {
+        this.fileerr.write(`${this.getTime(STYLES.ASSERT.FALSE, false)} ${different}\n`);
+      }
+      return false;
+      // throw AssertionError;
+    }
   }
 
   /**
@@ -96,7 +101,12 @@ export class Logger {
    * @returns {void} Nothing.
    */
   debug(...message: any[]): void {
-    this.console.debug(`${this.getTime(this.LEVEL.debug)} ${message.join(' ')}`);
+    if (Level.DEBUG >= this.level) {
+      this.stdout.write(`${this.getTime(STYLES.DEBUG)} ${message.join(' ')}\n`);
+      if (this.fileout) {
+        this.fileout.write(`${this.getTime(STYLES.DEBUG, false)} ${message.join(' ')}\n`);
+      }
+    }
   }
 
   /**
@@ -106,7 +116,12 @@ export class Logger {
    * @returns {void} Nothing.
    */
   info(...message: any[]): void {
-    this.console.info(`${this.getTime(this.LEVEL.info)} ${message.join(' ')}`);
+    if (Level.INFO >= this.level) {
+      this.stdout.write(`${this.getTime(STYLES.INFO)} ${message.join(' ')}\n`);
+      if (this.fileout) {
+        this.fileout.write(`${this.getTime(STYLES.INFO, false)} ${message.join(' ')}\n`);
+      }
+    }
   }
 
   /**
@@ -116,7 +131,12 @@ export class Logger {
    * @returns {void} Nothing.
    */
   warn(...message: any[]): void {
-    this.console.warn(`${this.getTime(this.LEVEL.warn)} ${message.join(' ')}`);
+    if (Level.WARN >= this.level) {
+      this.stderr.write(`${this.getTime(STYLES.WARN)} ${message.join(' ')}\n`);
+      if (this.fileerr) {
+        this.fileerr.write(`${this.getTime(STYLES.WARN, false)} ${message.join(' ')}\n`);
+      }
+    }
   }
 
   /**
@@ -126,7 +146,26 @@ export class Logger {
    * @returns {void} Nothing.
    */
   error(...message: any[]): void {
-    this.console.error(`${this.getTime(this.LEVEL.error)} ${message.join(' ')}`);
+    if (Level.ERROR >= this.level) {
+      this.stderr.write(`${this.getTime(STYLES.ERROR)} ${message.join(' ')}\n`);
+      if (this.fileerr) {
+        this.fileerr.write(`${this.getTime(STYLES.ERROR, false)} ${message.join(' ')}\n`);
+      }
+    }
+  }
+
+  /**
+   * Set log level.
+   *
+   * @param {Level} level Log level.
+   * @returns {Level} Log level.
+   */
+  setLevel(level: Level): Level {
+    return this.level = level;
+  }
+
+  toString(): string {
+    return `Logger name: ${this.name}. Log to file: ${this.fileout && this.fileerr}.`;
   }
 
 }
