@@ -7,13 +7,13 @@ const logger = new Logger({
   stdout: process.stdout,
   stderr: process.stderr,
   colorful: true,
-  level: Level.DEBUG,
+  level: Level.ALL,
   name: 'default'
 });
 // same as the index.ts, and these below
-// const logger = new Logger();
-// const logger = Logger.getLogger();
-// const logger = Logger.getLogger('default');
+// const logger = new Logger('default');
+// const logger = Logger.getLogger() as Logger;
+// const logger = Logger.getLogger('default') as Logger;
 
 logger.log('log what you input without any decorate');
 logger.debug('debug', 'to', 'console');
