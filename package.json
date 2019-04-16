@@ -1,6 +1,6 @@
 {
   "name": "@iinfinity/logger",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "TypeScript / JavaScript colorful logger, support saving logs to file(s).",
   "main": "index.js",
   "directories": {
@@ -15,9 +15,10 @@
     "test": "node node_modules/jasmine/bin/jasmine.js --config=jasmine.json --reporter=jasmine-console-reporter --require=ts-node/register"
   },
   "keywords": [
-    "logger",
+    "color",
+    "console",
     "log",
-    "console"
+    "logger"
   ],
   "author": "IInfinity <I.INF@Outlook.com> (https://don.red/)",
   "license": "MIT",
@@ -26,15 +27,14 @@
   },
   "homepage": "https://github.com/DevinDon/logger",
   "private": true,
-  "dependencies": {
-    "typescript": "latest"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "@types/jasmine": "^3.3.12",
-    "@types/node": "latest",
-    "jasmine": "^3.3.1",
-    "jasmine-console-reporter": "^3.1.0",
-    "ts-node": "latest"
+    "@types/jasmine": "3.x",
+    "@types/node": "11.x",
+    "jasmine": "3.x",
+    "jasmine-console-reporter": "3.x",
+    "ts-node": "8.x",
+    "typescript": "3.x"
   },
   "repository": {
     "type": "git",
