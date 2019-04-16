@@ -10,8 +10,8 @@ export const COLORS = {
     green: '\x1b[42m',
     magenta: '\x1b[45m',
     red: '\x1b[41m',
-    yellow: '\x1b[43m',
-    white: '\x1b[47m'
+    white: '\x1b[47m',
+    yellow: '\x1b[43m'
   },
   FONT: {
     black: '\x1b[30m',
@@ -20,8 +20,8 @@ export const COLORS = {
     green: '\x1b[32m',
     magenta: '\x1b[35m',
     red: '\x1b[31m',
-    yellow: '\x1b[33m',
-    white: '\x1b[37m'
+    white: '\x1b[37m',
+    yellow: '\x1b[33m'
   },
   CONSOLE: {
     backLine: '\x1b[1A',
