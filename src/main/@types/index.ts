@@ -11,7 +11,7 @@ export enum Level {
   INFO,
   WARN,
   ERROR,
-  NONE
+  OFF
 }
 
 /** Console option. */
