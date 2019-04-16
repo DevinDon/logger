@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.1 => 0.3.2
+
+- feat: customize color
+
 ## 0.3.0 => 0.3.1
 
 - feat: add setLogger static method

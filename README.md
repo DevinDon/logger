@@ -4,10 +4,9 @@ TypeScript / JavaScript colorful logger, support saving logs to file(s).
 
 # Changelog
 
-## 0.3.0 => 0.3.1
+## 0.3.1 => 0.3.2
 
-- feat: add setLogger static method
-- refactor: refactor constructor method
+- feat: customize color
 
 ## 0.2.0 => 0.3.0
 
