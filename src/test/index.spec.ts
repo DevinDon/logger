@@ -77,7 +77,7 @@ describe('logger', () => {
   });
 
   it('debug method should not output when level is higher than `DEBUG`', done => {
-    testLogger.setLevel(Level.NONE);
+    testLogger.setLevel(Level.OFF);
     expect((testLogger.debug('debug should not output anything'), out)).toBe('');
     testLogger.setLevel(Level.ERROR);
     expect((testLogger.debug('debug should not output anything'), out)).toBe('');
