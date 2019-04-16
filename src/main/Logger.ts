@@ -13,7 +13,7 @@ import { color } from './color';
 export class Logger extends Console {
 
   /** Global level. */
-  static LEVEL: Level = Level.ALL;
+  public static LEVEL: Level = Level.ALL;
   /** All loggers. */
   private static map: Map<string, Logger> = new Map();
 
@@ -117,7 +117,7 @@ export class Logger extends Console {
    * @param {string} different If different, this message will be display.
    * @returns {boolean} True or false.
    */
-  assert(condition: boolean, same: string, different: string): boolean {
+  public assert(condition: boolean, same: string, different: string): boolean {
     if (condition) {
       this.stdout && this.stdout.write(`${this.getTime(STYLES.ASSERT.TRUE)} ${same}\n`);
       this.fileout && this.fileout.write(`${this.getTime(STYLES.ASSERT.TRUE, false)} ${same}\n`);
@@ -136,8 +136,8 @@ export class Logger extends Console {
    * @param {any} message Message you want to print.
    * @returns {void} Nothing.
    */
-  debug(...message: any[]): void {
-    if (Level.DEBUG >= this.level) {
+  public debug(...message: any[]): void {
+    if (Level.DEBUG >= this.level && Level.DEBUG >= Logger.LEVEL) {
       this.stdout && this.stdout.write(`${this.getTime(STYLES.DEBUG)} ${message.join(' ')}\n`);
       this.fileout && this.fileout.write(`${this.getTime(STYLES.DEBUG, false)} ${message.join(' ')}\n`);
     }
@@ -149,8 +149,8 @@ export class Logger extends Console {
    * @param {any} message Message you want to print.
    * @returns {void} Nothing.
    */
-  info(...message: any[]): void {
-    if (Level.INFO >= this.level) {
+  public info(...message: any[]): void {
+    if (Level.INFO >= this.level && Level.INFO >= Logger.LEVEL) {
       this.stdout && this.stdout.write(`${this.getTime(STYLES.INFO)} ${message.join(' ')}\n`);
       this.fileout && this.fileout.write(`${this.getTime(STYLES.INFO, false)} ${message.join(' ')}\n`);
     }
@@ -162,8 +162,8 @@ export class Logger extends Console {
    * @param {any} message Message you want to print.
    * @returns {void} Nothing.
    */
-  warn(...message: any[]): void {
-    if (Level.WARN >= this.level) {
+  public warn(...message: any[]): void {
+    if (Level.WARN >= this.level && Level.WARN >= Logger.LEVEL) {
       this.stderr && this.stderr.write(`${this.getTime(STYLES.WARN)} ${message.join(' ')}\n`);
       this.fileerr && this.fileerr.write(`${this.getTime(STYLES.WARN, false)} ${message.join(' ')}\n`);
     }
@@ -175,8 +175,8 @@ export class Logger extends Console {
    * @param {any} message Message you want to print.
    * @returns {void} Nothing.
    */
-  error(...message: any[]): void {
-    if (Level.ERROR >= this.level) {
+  public error(...message: any[]): void {
+    if (Level.ERROR >= this.level && Level.ERROR >= Logger.LEVEL) {
       this.stderr && this.stderr.write(`${this.getTime(STYLES.ERROR)} ${message.join(' ')}\n`);
       this.fileerr && this.fileerr.write(`${this.getTime(STYLES.ERROR, false)} ${message.join(' ')}\n`);
     }
@@ -188,11 +188,11 @@ export class Logger extends Console {
    * @param {Level} level Log level.
    * @returns {Level} Log level.
    */
-  setLevel(level: Level): Level {
+  public setLevel(level: Level): Level {
     return this.level = level;
   }
 
-  toString(): string {
+  public toString(): string {
     return `Logger name: ${this.name}. Log to file: ${this.fileout && this.fileerr}.`;
   }
 

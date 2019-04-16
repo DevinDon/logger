@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.2 => 0.3.3
+
+- feat: allow to get / set global logger level
+
 ## 0.3.1 => 0.3.2
 
 - feat: customize color

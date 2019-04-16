@@ -4,9 +4,9 @@ TypeScript / JavaScript colorful logger, support saving logs to file(s).
 
 # Changelog
 
-## 0.3.1 => 0.3.2
+## 0.3.2 => 0.3.3
 
-- feat: customize color
+- feat: allow to get / set global logger level
 
 ## 0.2.0 => 0.3.0
 
