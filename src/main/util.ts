@@ -1,4 +1,4 @@
-import { COLORS } from '../@types';
+import { COLORS } from './@types';
 
 export function color(style: string, content: string): string {
   return `${style}${content}${COLORS.CONSOLE.reset}`;

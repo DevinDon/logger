@@ -1,4 +1,4 @@
-export * from './const';
+export * from './constant';
 import { Writable } from 'stream';
 
 /** Color. */
