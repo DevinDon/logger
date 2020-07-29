@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.3 => 0.3.4
+
+- perf: optimize date format
+
 ## 0.3.2 => 0.3.3
 
 - feat: allow to get / set global logger level
