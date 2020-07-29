@@ -1,4 +1,7 @@
 /node_modules
-/coverage
 /dist
-.vscode/launch.json
+/coverage
+/package-lock.json
+/out
+/temp
+/log

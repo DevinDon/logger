@@ -2,42 +2,61 @@
   "name": "@iinfinity/logger",
   "version": "0.3.3",
   "description": "TypeScript / JavaScript colorful logger, support saving logs to file(s).",
-  "main": "index.js",
+  "main": "dist/index.js",
   "directories": {
     "doc": "docs",
     "example": "src/demo",
     "test": "src/test"
   },
+  "files": [
+    "dist",
+    "docs"
+  ],
   "scripts": {
     "build": "tsc",
-    "debug": "node -r ts-node/register --inspect-brk src/main/index.ts",
-    "demo": "ts-node src/demo",
-    "test": "node node_modules/jasmine/bin/jasmine.js --config=jasmine.json --reporter=jasmine-console-reporter --require=ts-node/register"
+    "clean": "sh -c 'rm -rf dist out temp'",
+    "debug": "node --inspect-brk -r ts-node/register src/main/index.ts",
+    "demo": "cross-env MODE=DEV node -r ts-node/register src/demo/index.ts",
+    "dev": "cross-env MODE=DEV node -r ts-node/register src/main/index.ts",
+    "pack": "webpack --config webpack.prod.js",
+    "prepublishOnly": "npm run clean && npm run build",
+    "prod": "cross-env MODE=PROD node dist",
+    "start": "node dist",
+    "test": "node node_modules/jasmine/bin/jasmine.js --config=src/test/jasmine.json --reporter=jasmine-console-reporter --require=ts-node/register",
+    "watch": "tsc -w"
   },
   "keywords": [
+    "typescript",
     "color",
     "console",
     "log",
     "logger"
   ],
-  "author": "IInfinity <I.INF@Outlook.com> (https://don.red/)",
+  "author": "IInfinity <I.INF@Outlook.com> (https://blog.don.red/)",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/DevinDon/logger/issues"
-  },
-  "homepage": "https://github.com/DevinDon/logger",
-  "private": true,
+  "private": false,
   "dependencies": {},
   "devDependencies": {
-    "@types/jasmine": "3.x",
-    "@types/node": "11.x",
-    "jasmine": "3.x",
-    "jasmine-console-reporter": "3.x",
-    "ts-node": "8.x",
-    "typescript": "3.x"
+    "@types/jasmine": "3.5.11",
+    "@types/node": "14.0.25",
+    "@typescript-eslint/eslint-plugin": "3.7.0",
+    "@typescript-eslint/parser": "3.7.0",
+    "cross-env": "7.0.2",
+    "eslint": "7.5.0",
+    "jasmine": "3.5.0",
+    "jasmine-console-reporter": "3.1.0",
+    "ts-loader": "8.0.1",
+    "ts-node": "8.10.2",
+    "typescript": "3.9.7",
+    "webpack": "4.43.0",
+    "webpack-cli": "3.3.12"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/DevinDon/logger.git"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/DevinDon/logger/issues"
+  },
+  "homepage": "https://github.com/DevinDon/logger"
 }
