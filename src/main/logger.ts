@@ -2,7 +2,7 @@ import { Console } from 'console';
 import { createWriteStream } from 'fs';
 import { Writable } from 'stream';
 import { COLORS, Level, Option, STDNULL, Style, STYLES } from './@types';
-import { color } from './color';
+import { color } from './util';
 
 /**
  * Colorful logger support log to file.
@@ -100,9 +100,17 @@ export class Logger extends Console {
    * @returns {string} Time string.
    */
   private getTime(style: Style, colorful: boolean = this.colorful): string {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = `${date.getMonth() + 1}`.padStart(2, '0');
+    const day = `${date.getDate()}`.padStart(2, '0');
+    const hour = `${date.getHours()}`.padStart(2, '0');
+    const minute = `${date.getMinutes()}`.padStart(2, '0');
+    const second = `${date.getSeconds()}`.padStart(2, '0');
+    const output = `${year}-${month}-${day} ${hour}:${minute}:${second}`;
     return colorful
-      ? color(style.font, new Date().toLocaleString()) + ' ' + color(style.background, color(COLORS.FONT.black, `[${style.name}]`)) + ' '
-      : `${new Date().toLocaleString()} [${style.name}]`;
+      ? color(style.font, output) + ' ' + color(style.background, color(COLORS.FONT.black, `[${style.name}]`)) + ' '
+      : `${output} [${style.name}]`;
   }
 
   // tslint:disable: no-unused-expression
