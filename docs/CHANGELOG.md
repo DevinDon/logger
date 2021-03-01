@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.4 => 0.3.5
+
+- perf: remove useless dev deps & update deps
+
 ## 0.3.3 => 0.3.4
 
 - perf: optimize date format
