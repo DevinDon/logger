@@ -5,7 +5,7 @@ import { Logger } from '../main'; // use above import statement in your workspac
 const logToFileOnly = new Logger({
   name: 'log to file only',
   fileout: 'out.log',
-  fileerr: 'err.log'
+  fileerr: 'err.log',
 });
 
 logToFileOnly.log('log what you input without any decorate');
@@ -21,7 +21,7 @@ const logToFileAndScreen = new Logger({
   stdout: process.stdout,
   stderr: process.stderr,
   fileout: 'out.log',
-  fileerr: 'err.log'
+  fileerr: 'err.log',
 });
 
 logToFileAndScreen.log('log what you input without any decorate');

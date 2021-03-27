@@ -8,7 +8,7 @@ const logger = new Logger({
   stderr: process.stderr,
   colorful: true,
   level: Level.ALL,
-  name: 'default'
+  name: 'default',
 });
 // same as the index.ts, and these below
 // const logger = new Logger('default');
@@ -31,9 +31,10 @@ logger.warn('warn', 'something');
 /** Writable stream. */
 const customizeStream = new Writable({
   write(chunk, encoding, callback) {
+    // eslint-disable-next-line no-console
     console.log(`This is my stream: ${chunk.toString()}`);
     callback();
-  }
+  },
 });
 
 /** Customize stream logger. */
@@ -41,7 +42,7 @@ const customizeLogger = new Logger({
   stdout: customizeStream,
   stderr: customizeStream,
   level: Level.INFO,
-  name: 'stream'
+  name: 'stream',
 });
 
 customizeLogger.log('log what you input without any decorate');

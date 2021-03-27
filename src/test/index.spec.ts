@@ -16,21 +16,21 @@ describe('logger', () => {
         out = chunk.toString().trim();
         // console.log('CSUOUT: ' + out);
         callback();
-      }
+      },
     });
     cuserr = new Writable({
       write(chunk, encoding, callback) {
         err = chunk.toString().trim();
         // console.error('CSUERR: ' + err);
         callback();
-      }
+      },
     });
     testLogger = new Logger({
       stdout: cusout,
       stderr: cuserr,
       colorful: false,
       level: Level.ALL,
-      name: 'test'
+      name: 'test',
     });
     done();
   });
