@@ -1,3 +1,4 @@
 export * from './color';
-export * from './style';
+export * from './config';
 export * from './std';
+export * from './style';

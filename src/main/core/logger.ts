@@ -2,7 +2,7 @@ import { AssertionError } from 'assert';
 import { Console } from 'console';
 import { createWriteStream } from 'fs';
 import { Writable } from 'stream';
-import { COLORS, STDNULL, STYLES } from '../constants';
+import { COLORS, DEFAULT_CONFIG, InputConfig, STDNULL, STDOUT, STYLES } from '../constants';
 import { Level, LoggerConfig, Style } from '../interfaces';
 import { color } from '../utils';
 
@@ -61,34 +61,22 @@ export class Logger extends Console {
    *
    * The same as fileout / fileerr.
    *
-   * @param {LoggerConfig | string} config Logger config or name.
+   * @param {LoggerConfig} config Logger config or name.
    */
-  constructor(config: LoggerConfig | string) {
-    if (typeof config === 'string') {
-      super({
-        stdout: process.stdout,
-        stderr: process.stderr,
-        colorMode: true,
-      });
-      this.colorful = true;
-      this.level = Level.ALL;
-      this.name = config;
-      this.stdout = process.stdout;
-      this.stderr = process.stderr;
-    } else {
-      super({
-        stdout: config.stdout || STDNULL,
-        stderr: config.stderr,
-        colorMode: config.colorful,
-      });
-      this.colorful = typeof config.colorful === 'boolean' ? config.colorful : true;
-      this.level = config.level || Level.ALL; // default to ALL level
-      this.name = config.name;
-      this.fileout = config.fileout ? createWriteStream(config.fileout, { flags: 'a' }) : undefined;
-      this.fileerr = config.fileerr ? createWriteStream(config.fileerr, { flags: 'a' }) : undefined;
-      this.stdout = config.stdout;
-      this.stderr = config.stderr;
-    }
+  constructor(config: LoggerConfig = { name: 'default' }) {
+    const { name, level, colorful, stdout, stderr, fileout, fileerr }: InputConfig = Object.assign({}, DEFAULT_CONFIG, config);
+    super({
+      stdout,
+      stderr,
+      colorMode: colorful,
+    });
+    this.colorful = typeof colorful === 'boolean' ? colorful : true;
+    this.level = level; // default to ALL level
+    this.name = name;
+    this.fileout = fileout ? createWriteStream(fileout, { flags: 'a' }) : undefined;
+    this.fileerr = fileerr ? createWriteStream(fileerr, { flags: 'a' }) : undefined;
+    this.stdout = stdout;
+    this.stderr = stderr;
     Logger.map.set(this.name, this);
   }
 
@@ -203,4 +191,4 @@ export class Logger extends Console {
 
 }
 
-export const logger = new Logger('default');
+export const logger = new Logger();
