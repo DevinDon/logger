@@ -1,6 +1,5 @@
-import { Logger } from '../main';
 import { Writable } from 'stream';
-import { Level } from '../main/@types';
+import { Level, Logger } from '../main';
 
 describe('logger', () => {
 
@@ -51,11 +50,13 @@ describe('logger', () => {
   });
 
   it('assert method should output correctly', done => {
-    const matcherTrue = /\d+-\d+-\d+ \d+:\d+:\d+ \[ASSERT\] same/;
-    const matcherFalse = /\d+-\d+-\d+ \d+:\d+:\d+ \[ASSERT\] different/;
+    const matcherSame = /\d+-\d+-\d+ \d+:\d+:\d+ \[ASSERT\] same/;
+    const matcherDifferent = /\d+-\d+-\d+ \d+:\d+:\d+ \[ASSERT\] different/;
     // const matcher = (text: string) => /\d+-\d+-\d+ \d+:\d+:\d+ \[ASSERT\] ${}/;
-    expect((testLogger.assert(true, 'same', 'different'), matcherTrue.test(out))).toBeTruthy();
-    expect((testLogger.assert(false, 'same', 'different'), matcherFalse.test(err))).toBeTruthy();
+    testLogger.assert(true, 'same', 'different');
+    expect(matcherSame.test(out)).toBeTruthy();
+    expect(() => testLogger.assert(false, 'same', 'different')).toThrow();
+    expect(matcherDifferent.test(err)).toBeTruthy();
     done();
   });
 
@@ -87,29 +88,5 @@ describe('logger', () => {
     expect((testLogger.debug('debug should not output anything'), out)).toBe('');
     done();
   });
-
-  // it('should print debug message', done => {
-  //   const text = 'debug';
-  //   logger.debug(text);
-  //   done();
-  // });
-
-  // it('should print info message', done => {
-  //   const text = 'info';
-  //   logger.info(text);
-  //   done();
-  // });
-
-  // it('should print warn message', done => {
-  //   const text = 'warn';
-  //   logger.warn(text);
-  //   done();
-  // });
-
-  // it('should print error message', done => {
-  //   const text = 'error';
-  //   logger.error(text);
-  //   done();
-  // });
 
 });
