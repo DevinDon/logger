@@ -50,9 +50,9 @@ describe('logger', () => {
   });
 
   it('assert method should output correctly', done => {
-    const matcherSame = /\d+-\d+-\d+ \d+:\d+:\d+ \[ASSERT\] same/;
-    const matcherDifferent = /\d+-\d+-\d+ \d+:\d+:\d+ \[ASSERT\] different/;
-    // const matcher = (text: string) => /\d+-\d+-\d+ \d+:\d+:\d+ \[ASSERT\] ${}/;
+    const matcherSame = /\d+-\d+-\d+T\d+:\d+:\d+\.\d+Z \[ASSERT\] same/;
+    const matcherDifferent = /\d+-\d+-\d+T\d+:\d+:\d+\.\d+Z \[ASSERT\] different/;
+    // const matcher = (text: string) => /\d+-\d+-\d+T\d+:\d+:\d+\.\d+Z \[ASSERT\] ${}/;
     testLogger.assert(true, 'same', 'different');
     expect(matcherSame.test(out)).toBeTruthy();
     expect(() => testLogger.assert(false, 'same', 'different')).toThrow();
@@ -61,8 +61,8 @@ describe('logger', () => {
   });
 
   it('debug method should output correctly when level is not higher than `DEBUG`', done => {
-    const matcher = /\d+-\d+-\d+ \d+:\d+:\d+ \[DEBUG \] .*/;
-    // const matcher = (message: any) => new RegExp(`\d+-\d+-\d+ \d+:\d+:\d+ \[DEBUG \] ${message}`);
+    const matcher = /\d+-\d+-\d+T\d+:\d+:\d+\.\d+Z \[DEBUGS\] .*/;
+    // const matcher = (message: any) => new RegExp(`\d+-\d+-\d+T\d+:\d+:\d+\.\d+Z \[DEBUG \] ${message}`);
     const input1 = 'debug';
     const input2 = 'message';
     testLogger.setLevel(Level.ALL);

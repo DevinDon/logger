@@ -15,7 +15,8 @@
         "--require=ts-node/register",
       ],
       "sourceMaps": true,
-      "protocol": "inspector"
+      "protocol": "inspector",
+      "outputCapture": "std",
     },
     {
       "type": "node",
@@ -24,13 +25,14 @@
       "program": "${workspaceFolder}/node_modules/jasmine/bin/jasmine.js",
       "args": [
         "--require=ts-node/register",
-        "--config=src/test/jasmine.json",
+        "--config=jasmine.json",
         "--reporter=jasmine-console-reporter"
       ],
       "sourceMaps": true,
       "protocol": "inspector",
       "console": "integratedTerminal",
-      "internalConsoleOptions": "neverOpen"
+      "internalConsoleOptions": "neverOpen",
+      "outputCapture": "std",
     }
   ]
 }

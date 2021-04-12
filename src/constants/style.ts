@@ -16,7 +16,7 @@ export const STYLES: Styles = {
     },
   },
   DEBUG: {
-    name: 'DEBUG ',
+    name: 'DEBUGS',
     background: COLORS.BACKGROUND.blue,
     font: COLORS.FONT.blue,
   },
@@ -31,7 +31,7 @@ export const STYLES: Styles = {
     font: COLORS.FONT.yellow,
   },
   ERROR: {
-    name: 'ERROR ',
+    name: 'ERRORS',
     background: COLORS.BACKGROUND.red,
     font: COLORS.FONT.red,
   },

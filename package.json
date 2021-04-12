@@ -12,7 +12,7 @@
   ],
   "scripts": {
     "build": "tsc",
-    "clean": "rm -rf dist out temp",
+    "clean": "rm -rf dist out temp logs *.log",
     "debug": "node --inspect-brk -r ts-node/register src/index.ts",
     "demo": "node -r ts-node/register src/demo",
     "lint": "eslint . --fix",

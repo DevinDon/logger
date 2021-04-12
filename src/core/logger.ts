@@ -42,9 +42,9 @@ export class Logger extends Console {
   /** Log level, it may: `Level.ALL`, `Level.DEBUG`, `Level.INFO`, `Level.WARN`, `Level.ERROR` & `Level.NONE`. */
   public level: Level;
   /** STDOUT of this logger. */
-  public stdout?: Writable;
+  public stdout: Writable;
   /** STDERR of this logger. */
-  public stderr?: Writable;
+  public stderr: Writable;
   /** STDOUT to file. */
   public logout?: Writable;
   /** STDERR to file. */
@@ -63,7 +63,7 @@ export class Logger extends Console {
    *
    * @param {LoggerConfig} config Logger config or name.
    */
-  constructor(config: LoggerConfig = { name: 'default' }) {
+  constructor(config: LoggerConfig = {} as any) {
     const { name, level, colorful, stdout, stderr, logout, logerr }: InputConfig = Object.assign({}, DEFAULT_CONFIG, config);
     super({ stdout, stderr, colorMode: colorful });
     this.colorful = typeof colorful === 'boolean' ? colorful : true;
@@ -83,20 +83,19 @@ export class Logger extends Console {
    * @returns {string} Time string.
    */
   private getTime(style: Style, colorful: boolean = this.colorful): string {
-    const date = new Date();
-    const year = date.getFullYear();
-    const month = `${date.getMonth() + 1}`.padStart(2, '0');
-    const day = `${date.getDate()}`.padStart(2, '0');
-    const hour = `${date.getHours()}`.padStart(2, '0');
-    const minute = `${date.getMinutes()}`.padStart(2, '0');
-    const second = `${date.getSeconds()}`.padStart(2, '0');
-    const output = `${year}-${month}-${day} ${hour}:${minute}:${second}`;
+    // const date = new Date();
+    // const year = date.getFullYear();
+    // const month = `${date.getMonth() + 1}`.padStart(2, '0');
+    // const day = `${date.getDate()}`.padStart(2, '0');
+    // const hour = `${date.getHours()}`.padStart(2, '0');
+    // const minute = `${date.getMinutes()}`.padStart(2, '0');
+    // const second = `${date.getSeconds()}`.padStart(2, '0');
+    // const output = `${year}-${month}-${day} ${hour}:${minute}:${second}`;
+    const output = new Date().toISOString();
     return colorful
-      ? color(style.font, output) + ' ' + color(style.background, color(COLORS.FONT.black, `[${style.name}]`)) + ' '
+      ? `${color(style.font, output)} ${color(style.background, color(COLORS.FONT.black, `[${style.name}]`))}`
       : `${output} [${style.name}]`;
   }
-
-  // tslint:disable: no-unused-expression
 
   /**
    * A simple assertion test that verifies whether `condition` is truthy.
