@@ -1,5 +1,5 @@
 // import { Logger, Level } from '@iinfinity/logger';
-import { Logger, Level } from '../main'; // use above import statement in your workspace
+import { Logger, Level } from '../src'; // use above import statement in your workspace
 import { Writable } from 'stream';
 
 /** Default logger. */

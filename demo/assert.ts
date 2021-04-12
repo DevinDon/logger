@@ -1,4 +1,4 @@
-import { Logger } from '../main';
+import { Logger } from '../src';
 
 for (let i = 100; i; i--) {
   new Logger()

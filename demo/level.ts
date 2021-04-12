@@ -1,4 +1,4 @@
-import { Level, Logger } from '../main';
+import { Level, Logger } from '../src';
 
 const loggers: Logger[] = [
   new Logger({ name: 'all', level: Level.ALL }),

@@ -6,9 +6,9 @@ export interface LoggerConfig {
   /** Colorful logger, default to true. */
   colorful?: boolean;
   /** Path to save error. */
-  fileerr?: string;
+  logerr?: string;
   /** Path to save output. */
-  fileout?: string;
+  logout?: string;
   /** Log level, default to ALL. */
   level?: Level;
   /** Logger name. */

@@ -40,8 +40,8 @@ import { Logger } from '@iinfinity/logger';
 /** Save logs to file(s) only, it will not display on screen. */
 const logToFileOnly = new Logger({
   name: 'log to file only',
-  fileout: 'out.log',
-  fileerr: 'err.log'
+  logout: 'out.log',
+  logerr: 'err.log'
 });
 
 logToFileOnly.log('log what you input without any decorate');
@@ -56,8 +56,8 @@ const logToFileAndScreen = new Logger({
   name: 'log to file and screen',
   stdout: process.stdout,
   stderr: process.stderr,
-  fileout: 'out.log',
-  fileerr: 'err.log'
+  logout: 'out.log',
+  logerr: 'err.log'
 });
 
 logToFileAndScreen.log('log what you input without any decorate');

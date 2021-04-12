@@ -1,5 +1,5 @@
 import { Writable } from 'stream';
-import { Level, Logger } from '../main';
+import { Level, Logger } from '.';
 
 describe('logger', () => {
 

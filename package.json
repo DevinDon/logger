@@ -13,13 +13,13 @@
   "scripts": {
     "build": "tsc",
     "clean": "rm -rf dist out temp",
-    "debug": "node --inspect-brk -r ts-node/register src/main/index.ts",
+    "debug": "node --inspect-brk -r ts-node/register src/index.ts",
     "demo": "node -r ts-node/register src/demo",
     "lint": "eslint . --fix",
     "prepublishOnly": "npm run clean && npm run build",
     "postpublish": "sleep 1 && curl https://npm.taobao.org/sync/@rester/logger",
     "start": "node dist",
-    "test": "node node_modules/jasmine/bin/jasmine.js --config=src/test/jasmine.json --reporter=jasmine-console-reporter --require=ts-node/register",
+    "test": "node node_modules/jasmine/bin/jasmine.js --config=jasmine.json --reporter=jasmine-console-reporter --require=ts-node/register",
     "watch": "tsc -w"
   },
   "keywords": [
@@ -35,13 +35,13 @@
   "devDependencies": {
     "@types/jasmine": "3.6.9",
     "@types/node": "14.14.37",
-    "@typescript-eslint/eslint-plugin": "4.19.0",
-    "@typescript-eslint/parser": "4.19.0",
-    "eslint": "7.23.0",
+    "@typescript-eslint/eslint-plugin": "4.21.0",
+    "@typescript-eslint/parser": "4.21.0",
+    "eslint": "7.24.0",
     "jasmine": "3.7.0",
     "jasmine-console-reporter": "3.1.0",
     "ts-node": "9.1.1",
-    "typescript": "4.2.3"
+    "typescript": "4.2.4"
   },
   "repository": {
     "type": "git",

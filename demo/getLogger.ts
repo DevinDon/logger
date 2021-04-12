@@ -1,5 +1,5 @@
 // import { Logger, Level } from '@iinfinity/logger';
-import { Logger, Level, logger } from '../main'; // use above import statement in your workspace
+import { Logger, Level, logger } from '../src'; // use above import statement in your workspace
 
 /** The logger name is `1`. */
 const l1 = new Logger({ name: '1' });
