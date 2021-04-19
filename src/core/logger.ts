@@ -3,7 +3,7 @@ import { Console } from 'console';
 import { createWriteStream } from 'fs';
 import { Writable } from 'stream';
 import { COLORS, DEFAULT_CONFIG, InputConfig, STYLES } from '../constants';
-import { Level, LoggerConfig, Style } from '../interfaces';
+import { Level, LevelMap, LoggerConfig, Style } from '../interfaces';
 import { color, mkfile } from '../utils';
 
 /**
@@ -67,7 +67,7 @@ export class Logger extends Console {
     const { name, level, colorful, stdout, stderr, logout, logerr }: InputConfig = Object.assign({}, DEFAULT_CONFIG, config);
     super({ stdout, stderr, colorMode: colorful });
     this.colorful = typeof colorful === 'boolean' ? colorful : true;
-    this.level = level; // default to ALL level
+    this.level = Level[level.toUpperCase() as LevelMap]; // default to ALL level
     this.name = name;
     this.stdout = stdout;
     this.stderr = stderr;
@@ -125,7 +125,7 @@ export class Logger extends Console {
    * @returns {void} Nothing.
    */
   public debug(...message: any[]): void {
-    if (this.level === Level.ALL || this.level === Level.DEBUG) {
+    if (Level.DEBUG >= this.level) {
       this.stdout && this.stdout.write(`${this.getTime(STYLES.DEBUG)} ${message.join(' ')}\n`);
       this.logout && this.logout.write(`${this.getTime(STYLES.DEBUG, false)} ${message.join(' ')}\n`);
     }
@@ -138,7 +138,7 @@ export class Logger extends Console {
    * @returns {void} Nothing.
    */
   public info(...message: any[]): void {
-    if (this.level === Level.ALL || this.level === Level.DEBUG || this.level === Level.INFO) {
+    if (Level.INFO >= this.level) {
       this.stdout && this.stdout.write(`${this.getTime(STYLES.INFO)} ${message.join(' ')}\n`);
       this.logout && this.logout.write(`${this.getTime(STYLES.INFO, false)} ${message.join(' ')}\n`);
     }
@@ -151,7 +151,7 @@ export class Logger extends Console {
    * @returns {void} Nothing.
    */
   public warn(...message: any[]): void {
-    if (this.level === Level.ALL || this.level === Level.DEBUG || this.level === Level.INFO || this.level === Level.WARN) {
+    if (Level.WARN >= this.level) {
       this.stderr && this.stderr.write(`${this.getTime(STYLES.WARN)} ${message.join(' ')}\n`);
       this.logerr && this.logerr.write(`${this.getTime(STYLES.WARN, false)} ${message.join(' ')}\n`);
     }
@@ -164,7 +164,7 @@ export class Logger extends Console {
    * @returns {void} Nothing.
    */
   public error(...message: any[]): void {
-    if (this.level === Level.ALL || this.level === Level.DEBUG || this.level === Level.INFO || this.level === Level.WARN || this.level === Level.ERROR) {
+    if (Level.ERROR >= this.level) {
       this.stderr && this.stderr.write(`${this.getTime(STYLES.ERROR)} ${message.join(' ')}\n`);
       this.logerr && this.logerr.write(`${this.getTime(STYLES.ERROR, false)} ${message.join(' ')}\n`);
     }

@@ -1,5 +1,6 @@
 import { Writable } from 'stream';
 import { Level, Logger } from '.';
+import { LevelMap } from './interfaces';
 
 describe('logger', () => {
 
@@ -28,7 +29,7 @@ describe('logger', () => {
       stdout: cusout,
       stderr: cuserr,
       colorful: false,
-      level: Level.ALL,
+      level: LevelMap.ALL,
       name: 'test',
     });
     done();

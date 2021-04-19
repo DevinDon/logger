@@ -1,4 +1,4 @@
-import { Level, LoggerConfig } from '../interfaces';
+import { LevelMap, LoggerConfig } from '../interfaces';
 import { STDERR, STDOUT } from './std';
 
 export type InputConfig = Required<
@@ -9,7 +9,7 @@ export type InputConfig = Required<
 
 export const DEFAULT_CONFIG: InputConfig = {
   name: 'default',
-  level: Level.ALL,
+  level: LevelMap.ALL,
   colorful: true,
   stdout: STDOUT,
   stderr: STDERR,

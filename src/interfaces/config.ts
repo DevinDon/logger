@@ -1,5 +1,5 @@
 import { Writable } from 'stream';
-import { Level } from './level';
+import { LevelMap } from './level';
 
 /** Logger config. */
 export interface LoggerConfig {
@@ -10,7 +10,7 @@ export interface LoggerConfig {
   /** Path to save output. */
   logout?: string;
   /** Log level, default to ALL. */
-  level?: Level;
+  level?: LevelMap;
   /** Logger name. */
   name: string;
   /** Standard output. */
